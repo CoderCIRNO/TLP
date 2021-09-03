@@ -215,7 +215,6 @@ public class MainActivity extends AppCompatActivity {
         Log.d(TAG, "setUpMediaRecorder: " + fps);
         mCurrentFilePath = video.getAbsolutePath();
         mMediaRecorder = new MediaRecorder();
-        mMediaRecorder.setAudioSource(MediaRecorder.AudioSource.UNPROCESSED);
         mMediaRecorder.setVideoSource(MediaRecorder.VideoSource.SURFACE);
         mMediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4);
         mMediaRecorder.setOutputFile(mCurrentFilePath);
@@ -224,7 +223,6 @@ public class MainActivity extends AppCompatActivity {
         mMediaRecorder.setCaptureRate(fps);
         mMediaRecorder.setVideoSize(mVideoSize.getWidth(), mVideoSize.getHeight());
         mMediaRecorder.setVideoEncoder(MediaRecorder.VideoEncoder.H264);
-        mMediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AAC);
         mMediaRecorder.prepare();
         Log.d(TAG, "setUpMediaRecorder: prepared");
     }
@@ -242,7 +240,8 @@ public class MainActivity extends AppCompatActivity {
         public void onSurfaceTextureAvailable(@NonNull SurfaceTexture surface, int width, int height) {
             try{
                 CameraCharacteristics characteristics = mCamManager.getCameraCharacteristics(cameraId);
-                mVideoSize = characteristics.get(CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP).getOutputSizes(ImageFormat.JPEG)[0];
+                mVideoSize = characteristics.get(CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP).getOutputSizes(ImageFormat.JPEG)[3];
+                Log.d(TAG, "onSurfaceTextureAvailable: " + mVideoSize.getHeight() + " " + mVideoSize.getWidth());
                 mPreviewSize = mVideoSize;
                 Toast.makeText(getApplicationContext(), "尺寸:" + mVideoSize.getWidth() + " x " + mVideoSize.getHeight(), Toast.LENGTH_SHORT).show();
 
